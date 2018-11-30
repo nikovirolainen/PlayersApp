@@ -3,30 +3,33 @@ import { StyleSheet, Text, View, Button, Image, Alert, TextInput, FlatList } fro
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { SQLite } from 'expo';
 
+const db = SQLite.openDatabase('playerdb.db');
+
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {players: [], name: '', weight: 0, height: 0, gamesPlayed: 0, goals: 0, assists: 0, points: 0 }
+    this.state = {players: [], name: '', weight: '', height: '', gamesPlayed: '', goals: '', assists: '',}
   }
 
   componentDidMount() {
     db.transaction( tx => {
-      tx.executeSql('create table if not exists player (id integer primary key not null, name string, weight number, height number, gamesPlayed number, goals number, assists number, points number);');
+      tx.executeSql('create table if not exists player (id integer primary key not null, name text, weight int, height int, gamesPlayed int, goals int, assists int);');
       this.updateList();
     });
     }
 
   savePlayer = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into player (name, weight, height, gamesPlayed, goals, assists, points) values(?, ?, ?, ?, ?, ?)',
-        [this.state.name, this.state.weight, this.state.height, this.state.gamesPlayed, this.state.goals, this.state.assists, this.state.points]);
+      tx.executeSql('insert into player (name, weight, height, gamesPlayed, goals, assists) values (?, ?, ?, ?, ?, ?)',
+        [this.state.name, parseInt(this.state.weight), parseInt(this.state.height), parseInt(this.state.gamesPlayed), parseInt(this.state.goals), parseInt(this.state.assists)]);
         }, null, this.updateList)
         }
 
   updateList= () => {
     db.transaction (tx => {
-      tx.executeSql ('select * from player', [], (_, {rows}) => 
-        this.setState({ players: rows._array})
+      tx.executeSql ('select * from player', [], (_, { rows }) => 
+        this.setState({players: rows._array})
         );
         });
         }
@@ -39,90 +42,90 @@ export default class App extends React.Component {
         }, null, this.updateList)    
         }
         
-  showPlayer = () => {
-    Alert.alert(
-      'Your player has been saved to database',
-      '',
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
-    this.savePlayer()
-  }
+
+    listSeparator = () => {
+      return (
+        <View
+          style={{
+            height: 5,
+            width: "80%",
+            backgroundColor: "#fff",
+            marginLeft: "10%"
+          }}
+        />
+      );
+    };
 
   render() {
     return (
       <View style={styles.container}>
-        <View>
-          <Text style= {{backgroundColor: 'white'}}>Lisää: {this.state.name} {this.state.weight} {this.state.height} {this.state.gamesPlayed} {this.state.goals} {this.state.assists} {this.state.points}</Text>
-            <Button onPress={this.savePlayer} title="ADD NEW PLAYER" />
-        </View>
-
-        <TextInput keyboardType = 'default' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
+        
+        <Text>Nimi:</Text>
+        <TextInput placeholder='Nimi' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(name) => 
           this.setState({name})}
           value={this.state.name}/>
 
-        <TextInput keyboardType = 'name-phone-pad' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
+        <Text>Paino:</Text>
+        <TextInput placeholder='Paino' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(weight) => 
           this.setState({weight})}
-          value={this.state.weight}/>
+          value={this.state.weight}/> 
 
-        <TextInput keyboardType = 'numbers-and-punctuation' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
+        <Text>Pituus:</Text>
+        <TextInput placeholder='Pituus' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(height) => 
           this.setState({height})}
           value={this.state.height}/>
 
-        <TextInput keyboardType = 'twitter' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
+        <Text>Pelatut Ottelut:</Text>
+        <TextInput placeholder='Pelatut Ottelut' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(gamesPlayed) => 
           this.setState({gamesPlayed})}
           value={this.state.gamesPlayed}/>
 
-        <TextInput keyboardType = 'numeric' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
+        <Text>Maalit:</Text>
+        <TextInput placeholder='Maalit' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(goals) =>
           this.setState({goals})}
-          value={this.state.goals}/>
+          value={`${this.state.goals}`}/>
 
-        <TextInput keyboardType = 'numeric' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
+        <Text>Syötöt:</Text>
+        <TextInput placeholder='Syötöt' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:18, width: 200, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(assists) => 
           this.setState({assists})}
           value={this.state.assists}/>
 
-        <TextInput keyboardType = 'numeric' style={{ width: 90, borderColor: 'black', borderWidth: 4, backgroundColor: 'white'}}
-          onChangeText={(points) => 
-          this.setState({points})}
-          value={this.state.points}/>
-          <Button color="green" title="Save player to database" onPress={this.showPlayer}></Button>
+          <Button onPress={this.savePlayer} color="green" title="Save player to database"/>
 
-            <View style= {{width: 300, height: 200, alignItems: 'center'}}>
-              <Text>Player List:</Text>
-              <FlatList style = {{marginLeft: "5%"}} keyExtractor={item => item.id.toString()} 
-                data={this.state.players}
+              <Text style={{marginTop: 30, fontSize: 20}}>Player List:</Text>
+              <FlatList 
+                style={{marginLeft : "5%"}} 
+                keyExtractor={item => item.id} 
                 renderItem={({item}) =>
+
               <View style = {styles.listcontainer}>
-              <Text> {item.name}, {item.weight}, {item.height}, {item.gamesPlayed}, {item.goals}, {item.assists}, {item.points} </Text>
-              <Text style ={{color: '#0000ff'}} onPress= {()  =>
-              this.deletePlayer(item.id)}>Poista pelaaja</Text> 
-              </View>}/>
-            </View>
-      </View>
+              <Text style={{fontSize: 18}}> Nimi: {item.name}, Paino: {item.weight}, Pituus: {item.height}, Pelatut Ottelut: {item.gamesPlayed}, Maalit: {item.goals}, Syötöt: {item.assists}, Pisteet: {item.goals + item.assists} </Text>
+              <Text style ={{color: 'black'}} onPress= {()  => this.deletePlayer(item.id)}>Poista pelaaja</Text></View>}
+              data={this.state.players} ItemSeparatorComponent={this.listSeparator}
+              />
+              </View>
     );
   }
   }
 
-const db = SQLite.openDatabase('player.db');
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'grey',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-const styles2 = StyleSheet.create({
-  container: {
-    backgroundColor: 'red',
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      flex: 4,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    listcontainer: {
+      flex: 7,
+      flexDirection: 'column',
+      backgroundColor: 'red',
+      alignItems: 'center'
+    }  
+  });
