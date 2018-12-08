@@ -11,6 +11,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {players: [], name: '', position: '', gamesPlayed: '', goals: '', assists: ''}
+    this.navigate = this.props.navigation.navigate;
   }
 
   componentDidMount() {
@@ -65,54 +66,54 @@ export default class App extends React.Component {
 
     return (
          
-    <ImageBackground source={require('./backgroundphotos/ice-hockey-photo.jpg')} style={styles.imgBackground}> 
+    <ImageBackground source={require('./backgroundphotos/NHL-photo.jpg')} style={styles.imgBackground}> 
         <View>
       
         
-        <Text style={{color: 'white', fontStyle: 'italic', fontWeight: 'bold', fontSize: 20, textDecorationLine: 'underline'}}>Nimi:</Text>
-        <TextInput placeholder='Nimi' style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 300, height: 30, borderColor: 'black', borderWidth: 1}}
+        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Name:</Text>
+        <TextInput style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 361, height: 30, borderColor: 'white', borderWidth: 1}}
           onChangeText={(name) => 
           this.setState({name})}
           value={this.state.name}/>
 
-        <Text style={{color: 'white', fontStyle: 'italic', fontWeight: 'bold', fontSize: 20, textDecorationLine: 'underline'}}>Position: (G/D/F)</Text>
-        <TextInput placeholder='Position' style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 300, height: 30, borderColor: 'black', borderWidth: 1}}
+        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Position: (G/D/F)</Text>
+        <TextInput placeholder='Position' style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 361, height: 30, borderColor: 'blue', borderWidth: 1}}
           onChangeText={(position) => 
           this.setState({position})}
           value={this.state.position}/> 
 
-        <Text style={{color: 'white', fontStyle: 'italic', fontWeight: 'bold', fontSize: 20, textDecorationLine: 'underline'}}>Pelatut Ottelut:</Text>
-        <TextInput placeholder='Pelatut Ottelut' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 300, height: 30, borderColor: 'black', borderWidth: 1}}
+        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Games Played:</Text>
+        <TextInput placeholder='Games Played' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 361, height: 30, borderColor: 'white', borderWidth: 1}}
           onChangeText={(gamesPlayed) => 
           this.setState({gamesPlayed})}
           value={this.state.gamesPlayed}/>
 
-        <Text style={{color: 'white', fontStyle: 'italic', fontWeight: 'bold', fontSize: 20, textDecorationLine: 'underline'}}>Maalit:</Text>
-        <TextInput placeholder='Maalit' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 300, height: 30, borderColor: 'black', borderWidth: 1}}
+        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Goals:</Text>
+        <TextInput placeholder='Goals' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 361, height: 30, borderColor: 'blue', borderWidth: 1}}
           onChangeText={(goals) =>
           this.setState({goals})}
           value={this.state.goals}/>
 
-        <Text style={{color: 'white', fontStyle: 'italic', fontWeight: 'bold', fontSize: 20, textDecorationLine: 'underline'}}>Syötöt:</Text>
-        <TextInput placeholder='Syötöt' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 300, height: 30, borderColor: 'black', borderWidth: 1}}
+        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Assists:</Text>
+        <TextInput placeholder='Assists' keyboardType="numeric" style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 361, height: 30, borderColor: 'white', borderWidth: 1}}
           onChangeText={(assists) => 
           this.setState({assists})}
           value={this.state.assists}/>
         
         <Button onPress={this.savePlayer} color="green" title="Save player to database"/>
 
-              <Text style={{textAlign: 'center', marginTop: 15, fontSize: 20}}>Player List:</Text>
+              <Text style={{textAlign: 'center', marginTop: 15, fontSize: 30}}>Player List:</Text>
               <FlatList 
-                style={{marginLeft: '5%', marginTop: '2%'}} 
+                style={{ marginTop: '2%'}} 
                 keyExtractor={item => item.id.toString()} 
                 renderItem={({item}) =>
 
               <View style = {styles.listcontainer}>
-              <Text style={{fontSize: 18}}>Nimi: {item.name}, Position: {item.position}, Pelatut Ottelut: {item.gamesPlayed}, Maalit: {item.goals}, Syötöt: {item.assists}, Pisteet: {item.goals + item.assists} </Text>
+              <Text style={{fontSize: 18}}>Name: {item.name}, Position: {item.position}, Games Played: {item.gamesPlayed}, Goals: {item.goals}, Assists: {item.assists}, Points: {item.goals + item.assists} </Text>
               <Text style ={{color: 'black'}} onPress= {()  => this.deletePlayer(item.id)}>Delete player</Text></View>}
               data={this.state.players} ItemSeparatorComponent={this.listSeparator}
               />
-              <Button color="green" onPress={() => navigate('Stats')} title="Stats" />
+              <Button color="red" onPress={() => this.navigate('Stats', {players: [], name: 'Tapio', position: '', gamesPlayed: '', goals: '', assists: ''})} title="Stats" />
               </View>
     </ImageBackground>
     );
