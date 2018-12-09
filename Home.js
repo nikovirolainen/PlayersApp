@@ -65,7 +65,7 @@ export default class App extends React.Component {
           this.setState({name})}
           value={this.state.name}/>
 
-        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Position: (G/D/F)</Text>
+        <Text style={{color: 'black', fontStyle: 'italic', fontWeight: 'bold', textAlign:'center', fontSize: 20, textDecorationLine: 'underline'}}>Position: (D/F)</Text>
         <TextInput placeholder='Position' style={{ marginTop: 5, marginBottom: 5,  fontSize:25, width: 361, height: 30, borderColor: 'blue', borderWidth: 1}}
           onChangeText={(position) => 
           this.setState({position})}
