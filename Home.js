@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground, Alert, TextInput, FlatList } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-import { SQLite } from 'expo';
+import {StyleSheet, Text, View, Button, ImageBackground, TextInput, FlatList} from 'react-native';
+import {SQLite} from 'expo';
 
 const db = SQLite.openDatabase('playerssdb.db');
 
@@ -24,7 +23,8 @@ export default class App extends React.Component {
   savePlayer = () => {
     db.transaction(tx => {
       tx.executeSql('insert into playerss (name, position, gamesPlayed, goals, assists) values (?, ?, ?, ?, ?)',
-        [this.state.name, this.state.position, parseInt(this.state.gamesPlayed), parseInt(this.state.goals), parseInt(this.state.assists)]);
+        [this.state.name, this.state.position, parseInt(this.state.gamesPlayed), parseInt(this.state.goals), parseInt(this.state.assists)]
+        );
         }, null, this.updateList)
         }
 
@@ -40,28 +40,19 @@ export default class App extends React.Component {
   deletePlayer = (id) => {
     db.transaction(
       tx => {
-        tx.executeSql('delete from playerss where id = ?;', [id]);
+        tx.executeSql('delete from playerss where id = ?;', [id]
+        );
         }, null, this.updateList)    
         }
         
 
     listSeparator = () => {
       return (
-        <View
-          style={{
-            height: 5,
-            width: "80%",
-            backgroundColor: "#fff",
-            marginLeft: "10%"
-          }}
-        />
-      );
-    };
+        <View style={{height: 4, width: "85%", backgroundColor: "white", marginLeft: "10%"}}/>
+        );
+        };
 
   render() {
-
-    
-
     return (
          
     <ImageBackground source={require('./backgroundphotos/NHL-photo.jpg')} style={styles.imgBackground}> 
@@ -98,7 +89,7 @@ export default class App extends React.Component {
           this.setState({assists})}
           value={this.state.assists}/>
         
-        <Button onPress={this.savePlayer} color="green" title="Save player to database"/>
+        <Button onPress={this.savePlayer} color="red" title="Save player to database"/>
 
               <Text style={{textAlign: 'center', marginTop: 15, fontSize: 30}}>Player List:</Text>
               <FlatList 
@@ -111,7 +102,7 @@ export default class App extends React.Component {
               <Text style ={{color: 'black'}} onPress= {()  => this.deletePlayer(item.id)}>Delete player</Text></View>}
               data={this.state.players} ItemSeparatorComponent={this.listSeparator}
               />
-              <Button color="red" onPress={() => this.navigate('Stats', {players: [], name: '', position: '', gamesPlayed: '', goals: '', assists: ''})} title="Stats" />
+              <Button color="red" onPress={() => this.navigate('Stats', {players: [], name: 'Niko', position: '', gamesPlayed: '', goals: '', assists: ''})} title="Stats" />
               </View>
     </ImageBackground>
     );

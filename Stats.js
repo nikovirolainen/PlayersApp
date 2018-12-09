@@ -1,8 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground, Alert, TextInput, FlatList } from 'react-native';
-import { SQLite } from 'expo';
-
-const db = SQLite.openDatabase('playerssdb.db');
+import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 
 
 export default class App extends React.Component {
@@ -15,10 +12,7 @@ export default class App extends React.Component {
         return (
         <ImageBackground source={require('./backgroundphotos/ice-hockey-photo.jpg')} style={styles.imgBackground}>
             <View>
-                <Text style={{fontSize: 30, color: 'red'}}> Hello {this.props.navigation.state.params.players.name}</Text>
-
-
-
+                <Text style={{fontSize: 30, color: 'red'}}> Hello {this.props.navigation.state.params.name}</Text>
             </View>
         </ImageBackground>
         );
