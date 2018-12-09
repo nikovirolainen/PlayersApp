@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, ImageBackground, Alert, TextInput, FlatList } from 'react-native';
 import { SQLite } from 'expo';
 
-const db = SQLite.openDatabase('playerdb.db');
+const db = SQLite.openDatabase('playerssdb.db');
 
 
 export default class App extends React.Component {
@@ -12,11 +12,10 @@ export default class App extends React.Component {
     this.params = this.props.navigation.state.params;
     }
     render() {
-        this.params = this.props.navigation.state.params;
         return (
-        <ImageBackground source={require('./backgroundphotos/NHL-photo.jpg')} style={styles.imgBackground}>
+        <ImageBackground source={require('./backgroundphotos/ice-hockey-photo.jpg')} style={styles.imgBackground}>
             <View>
-                <Text>oispa {this.params.name}</Text>
+                <Text style={{fontSize: 30, color: 'red'}}> Hello {this.props.navigation.state.params.players.name}</Text>
 
 
 

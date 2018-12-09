@@ -113,7 +113,7 @@ export default class App extends React.Component {
               <Text style ={{color: 'black'}} onPress= {()  => this.deletePlayer(item.id)}>Delete player</Text></View>}
               data={this.state.players} ItemSeparatorComponent={this.listSeparator}
               />
-              <Button color="red" onPress={() => this.navigate('Stats', {players: [], name: 'Tapio', position: '', gamesPlayed: '', goals: '', assists: ''})} title="Stats" />
+              <Button color="red" onPress={() => this.navigate('Stats', {players: [], name: '', position: '', gamesPlayed: '', goals: '', assists: ''})} title="Stats" />
               </View>
     </ImageBackground>
     );
